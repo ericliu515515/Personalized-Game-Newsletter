@@ -2,6 +2,7 @@
 .ipynb_checkpoints/
 .agent.md
 data/query_history.jsonl
+openai_web_search_streaming_monitor.ipynb
 src/__pycache__/response.cpython-314.pyc
 .agent.md
 .readme
