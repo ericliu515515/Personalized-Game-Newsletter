@@ -175,6 +175,6 @@ def send_news_email(
     news_items: list[ValidatedNewsItem],
     subject: str | None = None,
 ) -> None:
-    email_subject = subject or os.getenv("EMAIL_SUBJECT", "PVN daily news digest")
+    email_subject = subject or os.getenv("EMAIL_SUBJECT", "Gaming News Digest")
     text_body, html_body = build_news_email(news_items)
     send_email(subject=email_subject, body=text_body, html_body=html_body)

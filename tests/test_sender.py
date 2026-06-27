@@ -125,12 +125,28 @@ def test_send_news_email_uses_generated_formatted_email(monkeypatch):
 
     sender.send_news_email(
         [make_news_item(1), make_news_item(2)],
-        subject="PVN custom subject",
+        subject="Custom gaming digest",
     )
 
-    assert captured["subject"] == "PVN custom subject"
+    assert captured["subject"] == "Custom gaming digest"
     assert "Here are today's 2 news." in captured["body"]
     assert "Gaming News Digest" in captured["html_body"]
+
+
+def test_send_news_email_uses_default_gaming_news_subject(monkeypatch):
+    import sender
+
+    captured = {}
+
+    def fake_send_email(subject: str, body: str, html_body: str | None = None) -> None:
+        captured["subject"] = subject
+
+    monkeypatch.delenv("EMAIL_SUBJECT", raising=False)
+    monkeypatch.setattr(sender, "send_email", fake_send_email)
+
+    sender.send_news_email([make_news_item(1)])
+
+    assert captured["subject"] == "Gaming News Digest"
 
 
 def test_send_news_email_sends_empty_digest(monkeypatch):
@@ -145,9 +161,9 @@ def test_send_news_email_sends_empty_digest(monkeypatch):
 
     monkeypatch.setattr(sender, "send_email", fake_send_email)
 
-    sender.send_news_email([], subject="PVN empty digest")
+    sender.send_news_email([], subject="Empty gaming digest")
 
-    assert captured["subject"] == "PVN empty digest"
+    assert captured["subject"] == "Empty gaming digest"
     assert "Sorry, PVN could not find any validated news items today." in captured["body"]
     assert "Sorry, PVN could not find any validated news items today." in captured[
         "html_body"
